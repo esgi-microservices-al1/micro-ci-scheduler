@@ -1,3 +1,6 @@
+import os
+
+import sender
 from json import JSONEncoder
 
 from bson import ObjectId
@@ -24,6 +27,7 @@ api = Api(app, version='1.0', title='Micro-CI-Scheduler API',
           description='a Flask based API for the Micro-CI-Scheduler micro-service')
 
 ns_schedule = api.namespace('schedule', description='schedule operations')
+ns_communication = api.namespace('communication', description='communication via amqp operations')
 
 
 @ns_schedule.route("/")
@@ -66,6 +70,20 @@ class Schedule(Resource):
         schedule_dto = ScheduleDto.deserialize(schedule_fetched)
         response = Response(app.json_encoder.encode(schedule_dto), status=200, mimetype='application/json')
         return response
+
+
+@ns_communication.route("/")
+class Communication(Resource):
+    @api.expect(str)
+    def post(self):
+        sender.send(os.environ['AMQP_IP'],
+                    os.environ['AMQP_PORT'],
+                    os.environ['AMQP_LOGIN'],
+                    os.environ['AMQP_PWD'],
+                    os.environ['AMQP_SEND_QUEUE'],
+                    'coucou')
+        return 'coucou'
+
 
 
 if __name__ == '__main__':
