@@ -1,4 +1,4 @@
-from flask_restplus import Api,fields
+from flask_restplus import Api, fields
 
 from dtos.IntervalCreateDto import IntervalCreateDto
 from errors.ApiError import ApiError
@@ -21,7 +21,7 @@ class ScheduleCreateDto:
             'project': fields.String(required=True, description='project of the schedule'),
             'branch': fields.String(required=True, description='branch of the project'),
             'interval': fields.Nested(interval_create_model, required=True),
-            'startDate' : fields.DateTime(dt_format='iso8601', required=True)
+            'startDate': fields.DateTime(dt_format='iso8601', required=True)
         })
 
     @staticmethod
@@ -34,17 +34,17 @@ class ScheduleCreateDto:
         return ScheduleCreateDto(name, project, branch, interval, start_date)
 
     def serialize(self):
-        return {'name' : self.name, 'project' : self.project,
-                'branch' : self.branch, 'interval' : self.interval.serialize(), 'startDate': self.start_date}
+        return {'name': self.name, 'project': self.project,
+                'branch': self.branch, 'interval': self.interval.serialize(), 'startDate': self.start_date}
 
     def validate(self):
         validate_interval, error = self.interval.validate()
         if validate_interval is False:
             return False, error
-        elif self.name is None or self.name is '':
+        elif self.name is None or self.name == '':
             return False, ApiError(f'name can\'t be None or Empty').serialize()
-        elif self.project is None or self.project is '' :
+        elif self.project is None or self.project == '':
             return False, ApiError(f'project can\'t be None or Empty').serialize()
-        elif self.branch is None or self.branch is '' :
+        elif self.branch is None or self.branch == '':
             return False, ApiError(f'branch can\'t be None or Empty').serialize()
         return True, None

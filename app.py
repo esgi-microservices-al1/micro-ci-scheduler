@@ -1,6 +1,6 @@
 import os
 
-from scriptsRabbitMQ import receiver, sender
+from rabbitmq import sender, receiver
 from json import JSONEncoder
 
 from bson import ObjectId
@@ -112,7 +112,6 @@ class Communication(Resource):
                     os.environ['AMQP_SEND_QUEUE'],
                     message)
         return message
-
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
 Werkzeug==0.16.1
 flask-restplus>=0.13.0
-pymongo
+pymongo>=3.10.1
 pymongo[srv]
+pika>=1.1.0

@@ -13,6 +13,6 @@ class MessageSenderDto:
         return MessageSenderDto(message)
 
     def validate(self):
-        if self.message is None or self.message is '':
+        if self.message is None or self.message == '':
             return False, ApiError(f'name can\'t be None or Empty').serialize()
         return True, None
