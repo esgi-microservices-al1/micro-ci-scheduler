@@ -1,6 +1,6 @@
 import os
 
-import sender
+from scriptsRabbitMQ import receiver, sender
 from json import JSONEncoder
 
 from bson import ObjectId
@@ -10,6 +10,7 @@ from flask_restplus import Resource, Api
 from dtos.MongoIdDto import MongoIdDto
 from dtos.ScheduleCreateDto import ScheduleCreateDto
 from dbconnection import db
+from dtos.MessageSenderDto import MessageSenderDto
 
 # subclass JSONEncoder
 from dtos.ScheduleDto import ScheduleDto
@@ -74,15 +75,43 @@ class Schedule(Resource):
 
 @ns_communication.route("/")
 class Communication(Resource):
+
+    def get(self):
+
+        """
+        Run the listener on the receiving queue
+        """
+
+        receiver.receive(os.environ['AMQP_IP'],
+                                   os.environ['AMQP_PORT'],
+                                   os.environ['AMQP_LOGIN'],
+                                   os.environ['AMQP_PWD'],
+                                   #os.environ['AMQP_RECEIVE_QUEUE']
+                                   os.environ['AMQP_SEND_QUEUE'])
+
+
     @api.expect(str)
     def post(self):
+
+        """
+        Post messages to the sending queue
+        """
+
+        body = request.get_json()
+        message_dto = MessageSenderDto.deserialize(body)
+        valid_dto, error = message_dto.validate()
+        if valid_dto is False:
+            return error, 400
+
+        message = message_dto.__getattribute__('message')
+
         sender.send(os.environ['AMQP_IP'],
                     os.environ['AMQP_PORT'],
                     os.environ['AMQP_LOGIN'],
                     os.environ['AMQP_PWD'],
                     os.environ['AMQP_SEND_QUEUE'],
-                    'coucou')
-        return 'coucou'
+                    message)
+        return message
 
 
 
