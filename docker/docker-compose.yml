@@ -4,7 +4,13 @@ services:
     rabbitmq:
         image: rabbitmq:3-management-alpine
         container_name: rabbitmq
-        env_file: .env
+        env_file: amq.env
         ports:
             - '5672:5672'
             - '15672:15672'
+    scheduler-ci:
+        image: scheduler-ci
+        container_name: scheduler-ci
+        env_file: scheduler-ci.env
+        ports:
+        - 5000:5000
