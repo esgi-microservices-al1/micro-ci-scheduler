@@ -1,10 +1,8 @@
 #!/usr/bin/env python
-import sys
-
 import pika
 
-def receive (ip, port, login, pwd, queue):
 
+def receive(ip, port, login, pwd, queue):
     credentials = pika.PlainCredentials(login, pwd)
 
     connection = pika.BlockingConnection(pika.ConnectionParameters(ip, port, '/', credentials))
@@ -13,7 +11,6 @@ def receive (ip, port, login, pwd, queue):
 
     channel.queue_declare(queue=queue)
 
-
     def callback(ch, method, properties, body):
         print(" [x] Received %r" % body)
         """
@@ -21,10 +18,9 @@ def receive (ip, port, login, pwd, queue):
         """
         return body
 
-
     channel.basic_consume(queue=queue,
-                      auto_ack=True,
-                      on_message_callback=callback)
+                          auto_ack=True,
+                          on_message_callback=callback)
 
-    print(' [x] Waiting for messages. To exit press CTRL+C')
+    print('[x] Waiting for messages. To exit press CTRL+C')
     channel.start_consuming()
