@@ -21,7 +21,7 @@ jobs:
       run: pip install -r requirements.txt && pip install 'pymongo[srv]' && python -m pip install flake8
 
     - name: Launch linter
-      run: python -m flake8
+      run: python -m flake8 .
 
     - name: launch Unit Test
       run: python -m unittest discover

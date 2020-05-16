@@ -12,5 +12,7 @@ api = Api(app, version='1.0', title='Micro-CI-Scheduler API',
 api.add_namespace(schedule_namespace)
 api.add_namespace(communication_namespace)
 
+
+
 if __name__ == '__main__':
     app.run()
