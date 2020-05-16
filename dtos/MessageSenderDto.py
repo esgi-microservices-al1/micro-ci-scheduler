@@ -6,7 +6,6 @@ class MessageSenderDto:
     def __init__(self, message):
         self.message = message
 
-
     @staticmethod
     def deserialize(data):
         print(data)
@@ -15,5 +14,5 @@ class MessageSenderDto:
 
     def validate(self):
         if self.message is None or self.message == '':
-            return False, ApiError(f'name can\'t be None or Empty').serialize()
+            return False, ApiError('name can\'t be None or Empty').serialize()
         return True, None

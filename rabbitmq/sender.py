@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import sys
 import pika
 
 
@@ -16,6 +15,5 @@ def send(ip, port, login, pwd, queue, body):
                           routing_key=queue,
                           body=body)
     print(" [x] Sent " + body)
-
 
     connection.close()

@@ -11,7 +11,6 @@ class ScheduleDto:
         self.interval = interval
         self.start_date = start_date
 
-
     @staticmethod
     def deserialize(data):
         interval = IntervalDto.deserialize(data['interval'])
@@ -21,3 +20,8 @@ class ScheduleDto:
         branch = data['branch']
         start_date = data['startDate']
         return ScheduleDto(id, name, project, branch, interval, start_date)
+
+    def __eq__(self, other):
+        return self.id == other.id and self.name == other.name and \
+               self.project == other.project and self.branch == other.branch and \
+               self.interval == other.interval and self.start_date == other.start_date

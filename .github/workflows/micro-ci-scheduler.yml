@@ -20,6 +20,12 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt && pip install 'pymongo[srv]'
 
+    - name: Launch linter
+      run: flake8
+
+    - name: launch Unit Test
+      run: python -m unittest discover
+
     # Add your build steps here
 
     #setup an environnement python 3.7

@@ -23,9 +23,9 @@ class IntervalCreateDto:
         return IntervalCreateDto(unity, frequency)
 
     def serialize(self):
-        return {'unity' : self.unity, 'frequency' : self.frequency}
+        return {'unity': self.unity, 'frequency': self.frequency}
 
     def validate(self):
         if self.unity == 'DAY' and self.frequency < 1:
             return False, ApiError(f'interval.frequency shouldn\'t be {self.frequency}').serialize()
-        return True,None
+        return True, None
