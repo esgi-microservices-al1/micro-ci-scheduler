@@ -10,6 +10,10 @@ from flask_restplus import Resource, Api
 from dtos.MongoIdDto import MongoIdDto
 from dtos.ScheduleCreateDto import ScheduleCreateDto
 from dbconnection import db
+import pymongo
+from models.Schedule import Schedule
+from flask import request
+from bson.objectid import ObjectId
 
 # subclass JSONEncoder
 from dtos.ScheduleDto import ScheduleDto
@@ -70,6 +74,28 @@ class Schedule(Resource):
         schedule_dto = ScheduleDto.deserialize(schedule_fetched)
         response = Response(app.json_encoder.encode(schedule_dto), status=200, mimetype='application/json')
         return response
+
+    @api.expect(ScheduleCreateDto.model(api), validate=True)
+    def put(self, id):
+        if not ObjectId.is_valid(id):
+            return 'Invalid schedule id ', 400
+        old = db.Schedule.find_one({"_id": ObjectId(id)})
+        if old is None:
+            return 'Schedule with id ' + id + ' not found', 404
+        new = request.get_json()
+        old.pop('_id')
+        update = {"$set": new}
+        db.Schedule.update_one(old, update)
+        return 'Schedule updated', 200
+
+    def delete(self, id):
+        if not ObjectId.is_valid(id):
+            return 'Invalid schedule id ', 400
+        old = db.Schedule.find_one({"_id": ObjectId(id)})
+        if old is None:
+            return 'Schedule with id ' + id + ' not found', 404
+        db.Schedule.delete_one(old)
+        return 'Schedule deleted', 200
 
 
 @ns_communication.route("/")
