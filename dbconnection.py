@@ -1,5 +1,11 @@
-import pymongo
+from pymongo import MongoClient
 import os
 
-client = pymongo.MongoClient("mongodb+srv://" + os.environ['DB_USER'] + ":" + os.environ['DB_PWD'] + "@microservice-schedulerdb-vccyy.azure.mongodb.net/test")
+db_user = os.environ['DB_USER']
+db_password = os.environ['DB_PWD']
+db_host = os.environ['DB_HOST']
+db_name = os.environ['DB_NAME']
+
+client = MongoClient(f'mongodb+srv://{db_user}:{db_password}@{db_host}/{db_name}')
 db = client.schedulerdb
+
