@@ -35,16 +35,17 @@ class ScheduleCreateDto:
 
     def serialize(self):
         return {'name': self.name, 'project': self.project,
-                'branch': self.branch, 'interval': self.interval.serialize(), 'startDate': self.start_date}
+                'branch': self.branch, 'interval': self.interval.serialize(),
+                'startDate': self.start_date}
 
     def validate(self):
         validate_interval, error = self.interval.validate()
         if validate_interval is False:
             return False, error
         elif self.name is None or self.name == '':
-            return False, ApiError(f'name can\'t be None or Empty').serialize()
+            return False, ApiError('name can\'t be None, Empty').serialize()
         elif self.project is None or self.project == '':
-            return False, ApiError(f'project can\'t be None or Empty').serialize()
+            return False, ApiError('project can\'t be None or Empty').serialize()
         elif self.branch is None or self.branch == '':
-            return False, ApiError(f'branch can\'t be None or Empty').serialize()
+            return False, ApiError('branch can\'t be None, Empty').serialize()
         return True, None

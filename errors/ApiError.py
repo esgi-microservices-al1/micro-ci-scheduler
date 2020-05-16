@@ -6,4 +6,4 @@ class ApiError:
         self.message = error
 
     def serialize(self):
-        return { "message" : self.message }
+        return {"message": self.message}

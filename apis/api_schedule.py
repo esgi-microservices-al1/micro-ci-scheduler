@@ -12,6 +12,7 @@ namespace = Namespace('schedule', description='schedule operations')
 
 json_encoder = DefaultJSONEncoder()
 
+
 @namespace.route("/")
 class ScheduleList(Resource):
 
@@ -39,7 +40,8 @@ class ScheduleList(Resource):
             return error, 400
         inserted = db.Schedule.insert_one(schedule_create_dto.serialize())
         mongo_id_dto = MongoIdDto(str(inserted.inserted_id))
-        response = Response(json_encoder.encode(mongo_id_dto), status=201, mimetype='application/json')
+        response = Response(json_encoder.encode(mongo_id_dto), status=201,
+                            mimetype='application/json')
         response.headers['Location'] = f'{request.base_url}{mongo_id_dto.id}'
         return response
 
@@ -51,7 +53,8 @@ class Schedule(Resource):
     def get(self, id):
         schedule_fetched = db.Schedule.find_one(ObjectId(oid=id))
         schedule_dto = ScheduleDto.deserialize(schedule_fetched)
-        response = Response(json_encoder.encode(schedule_dto), status=200, mimetype='application/json')
+        response = Response(json_encoder.encode(schedule_dto), status=200,
+                            mimetype='application/json')
         return response
 
     @namespace.expect(ScheduleCreateDto.model(namespace), validate=True)
