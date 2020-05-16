@@ -24,7 +24,7 @@ jobs:
       run: python -m flake8 .
 
     - name: launch Unit Test
-      run: python -m unittest discover
+      run: python -m unittest
 
     # Add your build steps here
 
