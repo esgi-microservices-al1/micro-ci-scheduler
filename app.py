@@ -75,6 +75,7 @@ class Schedule(Resource):
         response = Response(app.json_encoder.encode(schedule_dto), status=200, mimetype='application/json')
         return response
 
+    @api.expect(ScheduleCreateDto.model(api), validate=True)
     def put(self, id):
         if not ObjectId.is_valid(id):
             return 'Invalid schedule id ', 400
