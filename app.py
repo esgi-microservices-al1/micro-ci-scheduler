@@ -75,6 +75,27 @@ class Schedule(Resource):
         response = Response(app.json_encoder.encode(schedule_dto), status=200, mimetype='application/json')
         return response
 
+    def put(self, id):
+        if not ObjectId.is_valid(id):
+            return 'Invalid schedule id ', 400
+        old = db.Schedule.find_one({"_id": ObjectId(id)})
+        if old is None:
+            return 'Schedule with id ' + id + ' not found', 404
+        new = request.get_json()
+        old.pop('_id')
+        update = {"$set": new}
+        db.Schedule.update_one(old, update)
+        return 'Schedule updated', 200
+
+    def delete(self, id):
+        if not ObjectId.is_valid(id):
+            return 'Invalid schedule id ', 400
+        old = db.Schedule.find_one({"_id": ObjectId(id)})
+        if old is None:
+            return 'Schedule with id ' + id + ' not found', 404
+        db.Schedule.delete_one(old)
+        return 'Schedule deleted', 200
+
 
 @ns_communication.route("/")
 class Communication(Resource):
@@ -87,24 +108,6 @@ class Communication(Resource):
                     os.environ['AMQP_SEND_QUEUE'],
                     'coucou')
         return 'coucou'
-
-
-@app.route("/schedule/<schedule_id>", methods={'PUT', 'DELETE'})
-def put_delete_schedule(schedule_id):
-    if not ObjectId.is_valid(schedule_id):
-        return 'Invalid schedule id ', 400
-    old = db.Schedule.find_one({"_id": ObjectId(schedule_id)})
-    if old is None:
-        return 'Schedule with id ' + schedule_id + ' not found', 404
-    if request.method == 'PUT':
-        new = request.get_json()
-        old.pop('_id')
-        update = {"$set": new}
-        db.Schedule.update_one(old, update)
-        return 'Schedule updated', 200
-    elif request.method == 'DELETE':
-        db.Schedule.delete_one(old)
-        return 'Schedule deleted', 200
 
 
 if __name__ == '__main__':
