@@ -6,6 +6,8 @@ from json import JSONEncoder
 from bson import ObjectId
 from flask import Flask, request, Response
 from flask_restplus import Resource, Api
+from flask_swagger import swagger
+
 
 from dtos.MongoIdDto import MongoIdDto
 from dtos.ScheduleCreateDto import ScheduleCreateDto
@@ -29,6 +31,8 @@ api = Api(app, version='1.0', title='Micro-CI-Scheduler API',
 
 ns_schedule = api.namespace('schedule', description='schedule operations')
 ns_communication = api.namespace('communication', description='communication via amqp operations')
+
+
 
 
 @ns_schedule.route("/")
@@ -86,7 +90,6 @@ class Communication(Resource):
                                    os.environ['AMQP_PORT'],
                                    os.environ['AMQP_LOGIN'],
                                    os.environ['AMQP_PWD'],
-                                   #os.environ['AMQP_RECEIVE_QUEUE']
                                    os.environ['AMQP_SEND_QUEUE'])
 
 

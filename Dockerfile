@@ -1,8 +1,6 @@
-FROM python:3.8
+FROM python:3.7
 WORKDIR /app
 COPY . /app
-
-
 
 ARG DB_USER
 ARG DB_PWD

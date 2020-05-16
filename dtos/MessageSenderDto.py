@@ -9,6 +9,7 @@ class MessageSenderDto:
 
     @staticmethod
     def deserialize(data):
+        print(data)
         message = str(data['message'])
         return MessageSenderDto(message)
 
