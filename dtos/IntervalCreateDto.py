@@ -1,4 +1,4 @@
-from flask_restplus import Api, fields
+from flask_restplus import fields, Namespace
 
 from errors.ApiError import ApiError
 
@@ -10,8 +10,8 @@ class IntervalCreateDto:
         self.frequency = frequency
 
     @staticmethod
-    def model(api: Api):
-        return api.model('interval', {
+    def model(namespace: Namespace):
+        return namespace.model('interval', {
             'unity': fields.String(required=True, description='unity of the interval'),
             'frequency': fields.Integer(required=True, description='frequency of the interval')
         })

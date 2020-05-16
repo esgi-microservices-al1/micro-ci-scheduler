@@ -13,6 +13,9 @@ jobs:
 
     # Add your build steps here
 
+    #setup an environnement python 3.7
+    #install dependences
+
   # Uncomment and replace {userName} by your account folder name
   # deploy:
   #   name: Build/Publish Docker Images to DockerHub & Deploy to Azure VM

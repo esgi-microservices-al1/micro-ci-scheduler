@@ -150,5 +150,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-docker/amq.env
-docker/scheduler-ci.env
+
+docker/*.env

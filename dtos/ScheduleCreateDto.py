@@ -1,4 +1,4 @@
-from flask_restplus import Api, fields
+from flask_restplus import fields, Namespace
 
 from dtos.IntervalCreateDto import IntervalCreateDto
 from errors.ApiError import ApiError
@@ -14,9 +14,9 @@ class ScheduleCreateDto:
         self.start_date = start_date
 
     @staticmethod
-    def model(api: Api):
-        interval_create_model = IntervalCreateDto.model(api)
-        return api.model('schedule', {
+    def model(namespace: Namespace):
+        interval_create_model = IntervalCreateDto.model(namespace)
+        return namespace.model('schedule', {
             'name': fields.String(required=True, description='schedule name'),
             'project': fields.String(required=True, description='project of the schedule'),
             'branch': fields.String(required=True, description='branch of the project'),
