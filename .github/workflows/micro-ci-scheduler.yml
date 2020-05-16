@@ -11,6 +11,15 @@ jobs:
     - name: Checkout Project
       uses: actions/checkout@v1
 
+    - name: Setup Python 3.7 environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+        architecture: 'x64'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt && pip install 'pymongo[srv]'
+
     # Add your build steps here
 
     #setup an environnement python 3.7
