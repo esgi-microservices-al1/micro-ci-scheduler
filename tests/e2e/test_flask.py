@@ -1,16 +1,7 @@
 import json
-import pickle
-import tempfile
 from datetime import datetime
-from urllib.request import urlopen
 import pytest
-from bson import ObjectId
-from flask import Flask
-from flask_testing import LiveServerTestCase, TestCase
-from pymongo_inmemory import MongoClient as MemoryMongoClient
 from app import app
-from models.Interval import Interval
-from models.Schedule import Schedule
 
 
 @pytest.fixture
@@ -19,6 +10,7 @@ def client():
     app.testing = True
     with app.test_client() as client:
         yield client
+
 
 class TestAPI():
     # @pytest.fixture
