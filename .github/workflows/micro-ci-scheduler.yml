@@ -27,7 +27,7 @@ jobs:
       run: python -m unittest
 
     - name: Launch E2E Tests
-      run: python pytest
+      run: pytest
     # Add your build steps here
 
     #setup an environnement python 3.7
