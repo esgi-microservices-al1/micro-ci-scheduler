@@ -2,7 +2,6 @@ from pymongo import MongoClient
 from pymongo_inmemory import MongoClient as MemoryMongoClient
 import os
 from flask import Flask
-from flask.cli import with_appcontext
 
 app = Flask(__name__)
 #
