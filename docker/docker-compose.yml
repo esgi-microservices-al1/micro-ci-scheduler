@@ -1,17 +1,30 @@
 version: '3'
 
 services:
-    rabbitmq:
+    rabbitmq1:
         image: rabbitmq:3-management-alpine
-        container_name: rabbitmq
-        env_file: amq.env
+        hostname: rabbitmq1
+        env_file: amq.env.example
         ports:
             - '5672:5672'
             - '15672:15672'
+    rabbitmq2:
+        image: rabbitmq:3-management-alpine
+        hostname: rabbitmq2
+        env_file: amq.env.example
+        links:
+            - rabbitmq1
+        environment:
+            CLUSTER_WITH: rabbitmq1
+            ENABLE_RAM: 'true'
+            RAM_NODE: 'true'
+        ports:
+            - '5673:5672'
+            - '15673:15672'
     scheduler-ci:
         image: scheduler-ci
         container_name: scheduler-ci
-        env_file: scheduler-ci.env
+        env_file: scheduler-ci.env.example
         ports:
         - 5000:5000
     mongo:
@@ -19,7 +32,7 @@ services:
         #see https://www.surenderthakran.com/articles/tech/production-mongodb-using-docker
         image: mongo
         container_name: MongoDb
-        env_file: mongo.env
+        env_file: mongo.env.example
         volumes:
             - /volumes/mongo:/data/db
         ports:
