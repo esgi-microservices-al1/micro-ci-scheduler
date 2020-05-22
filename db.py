@@ -17,7 +17,7 @@ app = Flask(__name__)
 #     db = client.testdb
 
 
-if not app.testing:
+if os.environ['TESTING'] == "False":
     print("USING ALTAS")
     db_user = os.environ['DB_USER']
     db_password = os.environ['DB_PWD']
@@ -28,4 +28,4 @@ if not app.testing:
 else:
     print("USING MEMORY")
     client = MemoryMongoClient()
-    db = client.testdb
+    db = client.schedulerdb

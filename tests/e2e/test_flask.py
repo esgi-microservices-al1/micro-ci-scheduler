@@ -45,6 +45,7 @@ class TestAPI:
     #     application.testing = True
 
     def test_post_get_schedule(self):
+        app.testing = True
         with app.test_client() as client:
             post = client.post('/schedule', data=json.dumps(testSchedule), follow_redirects=True,
                                headers={'Content-Type': 'application/json'})
@@ -54,6 +55,7 @@ class TestAPI:
             assert b'"name": "scheduleTest' in res.data
 
     def test_post_delete_schedule(self):
+        app.testing = True
         with app.test_client() as client:
             post = client.post('/schedule', data=json.dumps(testSchedule), follow_redirects=True,
                                headers={'Content-Type': 'application/json'})
@@ -63,6 +65,7 @@ class TestAPI:
             assert res.status_code == 200
 
     def test_post_put_schedule(self):
+        app.testing = True
         with app.test_client() as client:
             post = client.post('/schedule', data=json.dumps(testSchedule), follow_redirects=True,
                                headers={'Content-Type': 'application/json'})
@@ -73,6 +76,7 @@ class TestAPI:
             assert res.status_code == 200
 
     def test_post_get_put_delete(self):
+        app.testing = True
         with app.test_client() as client:
             post = client.post('/schedule', data=json.dumps(testSchedule), follow_redirects=True,
                                headers={'Content-Type': 'application/json'})
