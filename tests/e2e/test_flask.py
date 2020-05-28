@@ -36,14 +36,6 @@ class TestAPI:
             res = client.get('/')
             assert res.status_code == 200
 
-    # @pytest.fixture
-    # def create_app(self):
-    #     application = app.create_app()
-    #     application.config['TESTING'] = True
-    #     application.config['DEBUG'] = False
-    #     # application.config['DATABASE'] = tempfile.mkstemp()
-    #     application.testing = True
-
     def test_post_get_schedule(self):
         app.testing = True
         with app.test_client() as client:
