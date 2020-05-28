@@ -21,8 +21,6 @@ if os.getenv('TESTING') is not None and os.environ['TESTING'] == "True":
     print("USING MEMORY")
     client = MemoryMongoClient()
     db = client.schedulerdb
-
-
 else:
     print("USING ALTAS")
     db_user = os.environ['DB_USER']
