@@ -1,5 +1,4 @@
 import json
-import pickle
 from datetime import datetime
 import pytest
 from app import app
@@ -63,8 +62,9 @@ class TestAPI:
                                headers={'Content-Type': 'application/json'})
             data = json.loads(post.data)
             assert post.status_code == 201
-            res = client.put("/schedule/" + data['id'], data=json.dumps(updatedSchedule), follow_redirects=True,
-                               headers={'Content-Type': 'application/json'})
+            res = client.put("/schedule/" + data['id'], data=json.dumps(updatedSchedule),
+                             follow_redirects=True,
+                             headers={'Content-Type': 'application/json'})
             assert res.status_code == 200
 
     def test_post_get_put_delete(self):
@@ -77,8 +77,9 @@ class TestAPI:
             res = client.get('/schedule/' + data['id'])
             assert res.status_code == 200
             assert b'"name": "scheduleTest' in res.data
-            res = client.put("/schedule/" + data['id'], data=json.dumps(updatedSchedule), follow_redirects=True,
-                               headers={'Content-Type': 'application/json'})
+            res = client.put("/schedule/" + data['id'], data=json.dumps(updatedSchedule),
+                             follow_redirects=True,
+                             headers={'Content-Type': 'application/json'})
             assert res.status_code == 200
             res = client.delete("/schedule/" + data['id'])
             assert res.status_code == 200
