@@ -23,9 +23,11 @@ jobs:
     - name: Launch linter
       run: python -m flake8 .
 
-    - name: launch Unit Test
+    - name: Launch Unit Tests
       run: python -m unittest
 
+    - name: Launch E2E Tests
+      run: pytest
     # Add your build steps here
 
     #setup an environnement python 3.7

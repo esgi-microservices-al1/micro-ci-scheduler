@@ -2,7 +2,7 @@ from bson import ObjectId
 from flask import request, Response
 from flask_restplus import Resource, Namespace
 
-from dbconnection import db
+from db import db
 from dtos.MongoIdDto import MongoIdDto
 from dtos.ScheduleCreateDto import ScheduleCreateDto
 from dtos.ScheduleDto import ScheduleDto
