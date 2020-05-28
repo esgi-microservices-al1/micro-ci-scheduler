@@ -25,6 +25,8 @@ jobs:
 
     - name: Launch Tests
       run: pytest
+      env:
+        TESTING: True
     # Add your build steps here
 
     #setup an environnement python 3.7
