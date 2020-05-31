@@ -12,7 +12,7 @@ else:
     # db_password = os.environ['DB_PWD']
     # db_host = os.environ['DB_HOST']
     # db_name = os.environ['DB_NAME']
+    # f'mongodb+srv://{db_user}:{db_password}@{db_host}/{db_name}'
     db_uri = os.environ['DB_URI']
-    #f'mongodb+srv://{db_user}:{db_password}@{db_host}/{db_name}'
     client = MongoClient(db_uri)
     db = client.schedulerdb
