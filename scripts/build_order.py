@@ -20,7 +20,7 @@ def send(ip, port, login, pwd, queue, body):
     connection.close()
 
 
-print('time to build, message to send = ' + sys.argv[0])
+print('time to build, message to send = ' + args.message)
 
 parser = argparse.ArgumentParser(description='test script')
 parser.add_argument('--message', type=str, required=True,
