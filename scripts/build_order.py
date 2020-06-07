@@ -1,5 +1,4 @@
 import os
-import sys
 import pika
 import argparse
 
@@ -19,13 +18,12 @@ def send(ip, port, login, pwd, queue, body):
 
     connection.close()
 
-
-print('time to build, message to send = ' + args.message)
-
 parser = argparse.ArgumentParser(description='test script')
 parser.add_argument('--message', type=str, required=True,
                     help='message')
 args = parser.parse_args()
+
+print('time to build, message to send = ' + args.message)
 
 send(os.environ['AMQP_IP'],
      os.environ['AMQP_PORT'],
