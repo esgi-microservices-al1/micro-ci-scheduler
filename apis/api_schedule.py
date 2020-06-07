@@ -7,6 +7,7 @@ from dtos.MongoIdDto import MongoIdDto
 from dtos.ScheduleCreateDto import ScheduleCreateDto
 from dtos.ScheduleDto import ScheduleDto
 from json_encoder import DefaultJSONEncoder
+from tools.crontab_writer import CrontabWriter
 
 namespace = Namespace('schedule', description='schedule operations')
 
@@ -40,6 +41,7 @@ class ScheduleList(Resource):
             return error, 400
         inserted = db.Schedule.insert_one(schedule_create_dto.serialize())
         mongo_id_dto = MongoIdDto(str(inserted.inserted_id))
+        CrontabWriter.add_schedule(schedule_create_dto)
         response = Response(json_encoder.encode(mongo_id_dto), status=201,
                             mimetype='application/json')
         response.headers['Location'] = f'{request.base_url}{mongo_id_dto.id}'
