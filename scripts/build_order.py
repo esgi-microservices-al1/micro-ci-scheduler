@@ -18,6 +18,7 @@ def send(ip, port, login, pwd, queue, body):
 
     connection.close()
 
+
 parser = argparse.ArgumentParser(description='test script')
 parser.add_argument('--message', type=str, required=True,
                     help='message')
