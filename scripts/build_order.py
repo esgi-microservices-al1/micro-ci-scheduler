@@ -1,3 +1,8 @@
+"""
+Prérequis pour le fonctionnement de ce script sur une machine linux :
+ - Python 2.7 ou plus récent
+ - pip installé pour tous les users (curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && sudo python get_pyp.py)
+"""
 import os
 import pika
 import argparse
@@ -26,9 +31,9 @@ args = parser.parse_args()
 
 print('time to build, message to send = ' + args.message)
 
-send(os.environ['AMQP_IP'],
-     os.environ['AMQP_PORT'],
-     os.environ['AMQP_LOGIN'],
-     os.environ['AMQP_PWD'],
-     os.environ['AMQP_SEND_QUEUE'],
+send(os.environ['AMQP_IP'].rstrip(),
+     os.environ['AMQP_PORT'].rstrip(),
+     os.environ['AMQP_LOGIN'].rstrip(),
+     os.environ['AMQP_PWD'].rstrip(),
+     os.environ['AMQP_SEND_QUEUE'].rstrip(),
      args.message)
