@@ -70,6 +70,7 @@ class Schedule(Resource):
         old.pop('_id')
         update = {"$set": new}
         db.Schedule.update_one(old, update)
+        CrontabWriter.update_schedule(old, new)
         return 'Schedule updated', 200
 
     def delete(self, id):
@@ -79,4 +80,5 @@ class Schedule(Resource):
         if old is None:
             return 'Schedule with id ' + id + ' not found', 404
         db.Schedule.delete_one(old)
+        CrontabWriter.update_schedule(old)
         return 'Schedule deleted', 200
