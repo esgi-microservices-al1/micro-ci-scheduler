@@ -41,7 +41,7 @@ class ScheduleList(Resource):
             return error, 400
         inserted = db.Schedule.insert_one(schedule_create_dto.serialize())
         mongo_id_dto = MongoIdDto(str(inserted.inserted_id))
-        CrontabWriter.add_schedule(schedule_create_dto)
+        CrontabWriter.add_schedule(schedule_create_dto, str(inserted.inserted_id))
         response = Response(json_encoder.encode(mongo_id_dto), status=201,
                             mimetype='application/json')
         response.headers['Location'] = f'{request.base_url}{mongo_id_dto.id}'
@@ -70,7 +70,7 @@ class Schedule(Resource):
         old.pop('_id')
         update = {"$set": new}
         db.Schedule.update_one(old, update)
-        CrontabWriter.update_schedule(old, new)
+        CrontabWriter.update_schedule(old_schedule=old, old_id=id, new_schedule=ScheduleCreateDto.deserialize(new), new_id=id)
         return 'Schedule updated', 200
 
     def delete(self, id):
@@ -80,5 +80,5 @@ class Schedule(Resource):
         if old is None:
             return 'Schedule with id ' + id + ' not found', 404
         db.Schedule.delete_one(old)
-        CrontabWriter.update_schedule(old)
+        CrontabWriter.update_schedule(old_schedule=old, old_id=id)
         return 'Schedule deleted', 200

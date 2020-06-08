@@ -4,11 +4,12 @@ from crontab import CronTab
 
 class CrontabWriter:
     @staticmethod
-    def add_schedule(schedule):
+    def add_schedule(schedule, id):
         cron = CronTab(user='root', tabfile='/scheduler-crontab/crontab')
-        job = cron.new(command='root python ' + os.environ[
-            'API_LOCAL_PATH'] + '/scripts/build_order.py --message build:' + schedule.project + ':' + schedule.branch,
-                       comment=schedule.project + ':' + schedule.branch)
+        job = cron.new(command='root . ' + os.environ[
+            'SCRIPTS_PATH'] + '/build_order.env;' + ' python ' + os.environ[
+            'SCRIPTS_PATH'] + '/build_order.py --message build:' + schedule.project + ':' + schedule.branch,
+                       comment=id)
         job = CrontabWriter.translate_schedule(schedule, job)
         if job.is_valid():
             cron.write()
@@ -36,8 +37,14 @@ class CrontabWriter:
         return job
 
     @staticmethod
-    def update_schedule(old_schedule, new_schedule=None):
-        pass
+    def update_schedule(old_schedule, old_id, new_schedule=None, new_id=None):
+        cron = CronTab(user='root', tabfile='/scheduler-crontab/crontab')
+        old_job = cron.find_comment(old_id)
+        cron.remove(old_job)
+        cron.write()
+        if new_schedule is not None and new_id is not None:
+            CrontabWriter.add_schedule(new_schedule, new_id)
+
 
 # class CrontabWriter:
 #     @staticmethod
