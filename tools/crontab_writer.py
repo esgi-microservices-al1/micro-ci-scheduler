@@ -1,10 +1,15 @@
 import os
+import platform
+
 from crontab import CronTab
 
 
 class CrontabWriter:
     @staticmethod
     def add_schedule(schedule, id):
+        if platform.system() != 'Linux':
+            print('crontab edit only works on UNIX systems')
+            return
         cron = CronTab(user='root', tabfile='/scheduler-crontab/crontab')
         job = cron.new(command='root . ' + os.environ[
             'SCRIPTS_PATH'] + '/build_order.env;' + ' python ' + os.environ[
@@ -38,6 +43,9 @@ class CrontabWriter:
 
     @staticmethod
     def update_schedule(old_schedule, old_id, new_schedule=None, new_id=None):
+        if platform.system() != 'Linux':
+            print('crontab edit only works on UNIX systems')
+            return 
         cron = CronTab(user='root', tabfile='/scheduler-crontab/crontab')
         old_job = cron.find_comment(old_id)
         cron.remove(old_job)
