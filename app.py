@@ -17,4 +17,4 @@ api.add_namespace(communication_namespace)
 
 print(os.environ.get("PYMONGOIM__BIN_FOLDER", _mkdir_ifnot_exist("bin")))
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
