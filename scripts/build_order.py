@@ -1,8 +1,3 @@
-"""
-Prérequis pour le fonctionnement de ce script sur une machine linux :
- - Python 2.7 ou plus récent
- - pip installé pour tous les users (curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && sudo python get_pyp.py)
-"""
 import os
 import pika
 import argparse
