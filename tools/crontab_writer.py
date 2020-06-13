@@ -5,14 +5,15 @@ from crontab import CronTab
 
 crontab_file = '/scheduler-crontab/crontab'
 
-if os.environ['TESTING'] is not None and os.environ['TESTING'] is True:
-    crontab_file = '/etc/crontab'
+
+def isTestLaunched():
+    return os.environ['TESTING'] is not None and os.environ['TESTING'] is True
 
 
 class CrontabWriter:
     @staticmethod
     def add_schedule(schedule, id):
-        if platform.system() != 'Linux':
+        if platform.system() != 'Linux' or isTestLaunched() :
             print('crontab edit only works on UNIX systems')
             return
 
@@ -52,7 +53,7 @@ class CrontabWriter:
 
     @staticmethod
     def update_schedule(old_schedule, old_id, new_schedule=None, new_id=None):
-        if platform.system() != 'Linux':
+        if platform.system() != 'Linux' or isTestLaunched():
             print('crontab edit only works on UNIX systems')
             return
         cron = CronTab(user='root', tabfile=crontab_file)
