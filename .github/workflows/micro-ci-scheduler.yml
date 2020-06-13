@@ -32,6 +32,8 @@ jobs:
     needs: tests
     # Add your build steps here
     steps :
+      - name: Checkout Project
+        uses: actions/checkout@v2
       - name: Build & push Docker image
         uses: docker/build-push-action@v1
         # master branch only
