@@ -3,6 +3,11 @@ import platform
 
 from crontab import CronTab
 
+crontab_file = '/scheduler-crontab/crontab'
+
+if os.environ['TESTING'] is not None and os.environ['TESTING'] is True:
+    crontab_file = '/etc/crontab'
+
 
 class CrontabWriter:
     @staticmethod
@@ -10,13 +15,14 @@ class CrontabWriter:
         if platform.system() != 'Linux':
             print('crontab edit only works on UNIX systems')
             return
-        cron = CronTab(user='root', tabfile='/scheduler-crontab/crontab')
+
+        cron = CronTab(user='root', tabfile=crontab_file)
 
         # TODO jsonify this message
-        job = cron.new(command='root . ' + os.environ[
-            'SCRIPTS_PATH'] + '/build_order.env;' + ' python ' + os.environ[
-            'SCRIPTS_PATH'] + '/build_order.py --message  build:' + schedule.project +
-                               ':' + schedule.branch, comment=id)
+        job = cron.new(command='root . ' + os.environ['SCRIPTS_PATH'] +
+                               '/build_order.env;' + ' python ' +
+                               os.environ['SCRIPTS_PATH'] + '/build_order.py --message  build:' +
+                               schedule.project + ':' + schedule.branch, comment=id)
         job = CrontabWriter.translate_schedule(schedule, job)
         if job.is_valid():
             cron.write()
@@ -49,13 +55,12 @@ class CrontabWriter:
         if platform.system() != 'Linux':
             print('crontab edit only works on UNIX systems')
             return
-        cron = CronTab(user='root', tabfile='/scheduler-crontab/crontab')
+        cron = CronTab(user='root', tabfile=crontab_file)
         old_job = cron.find_comment(old_id)
         cron.remove(old_job)
         cron.write()
         if new_schedule is not None and new_id is not None:
             CrontabWriter.add_schedule(new_schedule, new_id)
-
 
 # class CrontabWriter:
 #     @staticmethod
