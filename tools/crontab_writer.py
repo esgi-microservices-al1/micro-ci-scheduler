@@ -13,7 +13,7 @@ def isTestLaunched():
 class CrontabWriter:
     @staticmethod
     def add_schedule(schedule, id):
-        if platform.system() != 'Linux' or isTestLaunched() :
+        if platform.system() != 'Linux' or isTestLaunched():
             print('crontab edit only works on UNIX systems')
             return
 
