@@ -3,8 +3,8 @@ name: ESGI Micro CI Scheduler
 on: [push, pull_request]
 
 jobs:
-  build:
-    name: Build Micro CI Scheduler Project
+  tests:
+    name: Tests Micro CI Scheduler Project
     runs-on: ubuntu-latest
 
     steps:
@@ -25,36 +25,53 @@ jobs:
 
     - name: Launch Tests
       run: export TESTING=True && pytest
-    # Add your build steps here
 
-    #setup an environnement python 3.7
-    #install dependences
+#  build:
+#    name: Build Micro CI Scheduler Project
+#    runs-on: ubuntu-latest
+#    # master branch only
+#    if: github.ref == 'refs/heads/master'
+#    needs: tests
+#    # Add your build steps here
+#    steps :
+#      - name: Checkout Project
+#        uses: actions/checkout@v2
+#      - name: Build & push Docker image
+#        uses: docker/build-push-action@v1
+#
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
+#          repository: esgimicroci/al1-scheduler
+#          tags: latest
+
 
   # Uncomment and replace {userName} by your account folder name
-  # deploy:
-  #   name: Build/Publish Docker Images to DockerHub & Deploy to Azure VM
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/master'
+  deploy:
+     name: Build/Publish Docker Images to DockerHub & Deploy to Azure VM
+     runs-on: ubuntu-latest
+     if: github.ref == 'refs/heads/master'
+     needs: tests
+     steps:
+     - name: Checkout Project
+       uses: actions/checkout@v1
 
-  #   steps:
-  #   - name: Checkout Project
-  #     uses: actions/checkout@v1
+     - name: Build & Publish Docker Image
+       uses: docker/build-push-action@v1
+       with:
+         username: ${{ secrets.DOCKER_USERNAME }}
+         password: ${{ secrets.DOCKER_PASSWORD }}
+         repository: micro-ci-al1/micro-ci-scheduler
+         tag_with_ref: true
+#         tags: latest
 
-  #   - name: Build & Publish Docker Image
-  #     uses: docker/build-push-action@v1
-  #     with:
-  #       username: ${{ secrets.DOCKER_USERNAME }}
-  #       password: ${{ secrets.DOCKER_PASSWORD }}
-  #       repository: micro-ci-al1/micro-ci-scheduler
-  #       tag_with_ref: true
+     - name: Azure Login
+       uses: azure/login@v1
+       with:
+         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-  #   - name: Azure Login
-  #     uses: azure/login@v1
-  #     with:
-  #       creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-  #   - name: Azure CLI script
-  #     uses: azure/CLI@v1
-  #     with:
-  #       inlineScript: |
-  #         az vm run-command invoke -g ${{ secrets.AZURE_RESOURCE_GRP }} -n ${{ secrets.AZURE_VM }} --command-id RunShellScript --scripts "cd /home/{userName} && wget -q https://raw.githubusercontent.com/esgi-microservices-al1/micro-ci-scheduler/master/.github/azure/docker-compose.yml -O docker-compose.yml && docker-compose stop && docker-compose rm && docker-compose up -d"
+     - name: Azure CLI script
+       uses: azure/CLI@v1
+       with:
+         inlineScript: |
+           az vm run-command invoke -g ${{ secrets.AZURE_RESOURCE_GRP }} -n ${{ secrets.AZURE_VM }} --command-id RunShellScript --scripts "cd /home/micro-ci-al1/micro-ci-scheduler && wget -q https://raw.githubusercontent.com/esgi-microservices-al1/micro-ci-scheduler/master/.github/azure/docker-compose.yml -O docker-compose.yml && docker-compose stop && docker-compose rm && docker-compose up -d"
