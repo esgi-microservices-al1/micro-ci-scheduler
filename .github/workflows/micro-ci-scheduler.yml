@@ -3,8 +3,8 @@ name: ESGI Micro CI Scheduler
 on: [push, pull_request]
 
 jobs:
-  build:
-    name: Build Micro CI Scheduler Project
+  tests:
+    name: Tests Micro CI Scheduler Project
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,25 @@ jobs:
 
     - name: Launch Tests
       run: export TESTING=True && pytest
+
+  build:
+    name: Build Micro CI Scheduler Project
+    runs-on: ubuntu-latest
+    needs: tests
     # Add your build steps here
+    steps :
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v3
+        # master branch only
+        if: github.ref == 'refs/heads/master'
+        with:
+          image: esgimicroci/al1-scheduler
+          tag: latest
+          registry: https://hub.docker.com/u/esgimicroci
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+
 
     #setup an environnement python 3.7
     #install dependences
