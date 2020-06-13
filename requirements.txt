@@ -10,4 +10,3 @@ pytest~=5.4.2
 rabbitmq>=0.2.0
 python-crontab>=2.5.1
 flask_cors
-crontab
