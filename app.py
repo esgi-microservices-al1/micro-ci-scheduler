@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request
+from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
 from pymongo_inmemory.downloader import _mkdir_ifnot_exist

@@ -11,10 +11,12 @@ class CrontabWriter:
             print('crontab edit only works on UNIX systems')
             return
         cron = CronTab(user='root', tabfile='/scheduler-crontab/crontab')
+
+        # TODO jsonify this message
         job = cron.new(command='root . ' + os.environ[
             'SCRIPTS_PATH'] + '/build_order.env;' + ' python ' + os.environ[
-            'SCRIPTS_PATH'] + '/build_order.py --message  build:' + schedule.project + ':' + schedule.branch, # TODO jsonify this message
-                       comment=id)
+            'SCRIPTS_PATH'] + '/build_order.py --message  build:' + schedule.project +
+                               ':' + schedule.branch, comment=id)
         job = CrontabWriter.translate_schedule(schedule, job)
         if job.is_valid():
             cron.write()
@@ -34,7 +36,8 @@ class CrontabWriter:
             if schedule.interval.frequency == 2:
                 job.day.on(1, 15)
             else:
-                job.dow.on('SUN')  # impossible de faire mieux, cron ne prend pas en charge 'every x weeks'
+                # impossible de faire mieux, cron ne prend pas en charge 'every x weeks'
+                job.dow.on('SUN')
         elif schedule.interval.unity == 'HOUR':
             job.hour.every(schedule.interval.frequency)
         elif schedule.interval.unity == 'MINUTE':
@@ -61,7 +64,8 @@ class CrontabWriter:
 #         print('opened /etc/crontab, content :' + str(cron.readlines()))
 #         cron.write('\n')
 #         cron.write(CrontabWriter.schedule_to_cron(schedule))
-#         print('wrote : ' + CrontabWriter.schedule_to_cron(schedule) + ' to /etc/crontab')
+#         print('wrote : ' + CrontabWriter.schedule_to_cron(schedule) +
+#               ' to /etc/crontab')
 #         print('new /etc/crontab content : ' + str(cron.readlines()))
 #         cron.close()
 #
@@ -76,12 +80,15 @@ class CrontabWriter:
 #             if str(schedule.interval.frequency) == 2:
 #                 interval = '0 0\t1,15 * 0'
 #             else:
-#                 interval = '0 0\t* * 0'  # impossible de faire mieux, cron ne prend pas en charge 'every x weeks'
+#                 #impossible de faire mieux, cron ne prend pas en charge 'every x weeks'
+#                 interval = '0 0\t* * 0'
 #         elif schedule.interval.unity == 'HOUR':
 #             interval = '0 */' + str(schedule.interval.frequency) + '\t* * *'
 #         elif schedule.interval.unity == 'MINUTE':
 #             interval = '*/' + schedule.interval.unity + ' *\t* * *'
-#         command = ' root python ' + os.environ['API_LOCAL_PATH'] + '/scripts/build_order.py --message build:' + schedule.name + ':' + schedule.branch
+#         command = ' root python ' + os.environ['API_LOCAL_PATH'] +
+#                   '/scripts/build_order.py --message build:' +
+#                   schedule.name + ':' + schedule.branch
 #         return interval + command
 #
 #     @staticmethod

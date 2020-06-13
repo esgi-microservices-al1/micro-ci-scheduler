@@ -71,7 +71,8 @@ class Schedule(Resource):
         old.pop('_id')
         update = {"$set": new}
         db.Schedule.update_one(old, update)
-        CrontabWriter.update_schedule(old_schedule=old, old_id=id, new_schedule=ScheduleCreateDto.deserialize(new), new_id=id)
+        CrontabWriter.update_schedule(old_schedule=old, old_id=id,
+                                      new_schedule=ScheduleCreateDto.deserialize(new), new_id=id)
         return 'Schedule updated', 200
 
     def delete(self, id):
