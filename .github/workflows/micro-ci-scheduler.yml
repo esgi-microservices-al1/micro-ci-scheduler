@@ -33,15 +33,14 @@ jobs:
     # Add your build steps here
     steps :
       - name: Build & push Docker image
-        uses: mr-smithers-excellent/docker-build-push@v3
+        uses: docker/build-push-action@v1
         # master branch only
 #        if: github.ref == 'refs/heads/master'
         with:
-          image: esgimicroci/al1-scheduler
-          tag: latest
-          registry: https://hub.docker.com/u/esgimicroci
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: esgimicroci/al1-scheduler
+          tags: latest
 
 
 
