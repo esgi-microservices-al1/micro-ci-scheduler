@@ -7,7 +7,7 @@ crontab_file = '/scheduler-crontab/crontab'
 
 
 def isTestLaunched():
-    return os.environ['TESTING'] is not None and os.environ['TESTING'] is True
+    return os.getenv('TESTING') is not None and os.environ['TESTING'] == "True"
 
 
 class CrontabWriter:
