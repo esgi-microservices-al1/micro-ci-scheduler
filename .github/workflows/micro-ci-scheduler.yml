@@ -51,6 +51,7 @@ jobs:
      name: Build/Publish Docker Images to DockerHub & Deploy to Azure VM
      runs-on: ubuntu-latest
      if: github.ref == 'refs/heads/master'
+     
      needs: tests
      steps:
      - name: Checkout Project
