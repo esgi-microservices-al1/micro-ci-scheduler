@@ -22,5 +22,5 @@ EXPOSE 5000
 
 # RUN groupadd -g 999 appuser && useradd -r -u 999 -g appuser appuser
 
-CMD ["python", "/app/app.py"]
+CMD ["python", "app.py"]
 # CMD ["flask","run", "--host=0.0.0.0"]

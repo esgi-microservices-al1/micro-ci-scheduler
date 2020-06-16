@@ -1,70 +1,79 @@
 version: '3'
 
 services:
-    rabbitmq:
-        image: rabbitmq:3-management-alpine
-        container_name: rabbitmq
-        env_file: amq.env
+    consul:
+        image: consul:latest
+        container_name: consul
+        environment:
+            - CONSUL_BIND_INTERFACE=eth0
         ports:
-            - '5672:5672'
-            - '15672:15672'
-    scheduler-ci:
-        build: ..
-        container_name: scheduler-ci
-        env_file: scheduler-ci.env
-        volumes:
-        - '/etc:/scheduler-crontab'
-        ports:
-            - 5000:5000
+            - 5000:8500
+            - 5001:8600
+
+#    rabbitmq:
+#        image: rabbitmq:3-management-alpine
+#        container_name: rabbitmq
+#        env_file: amq.env
+#        ports:
+#            - '5672:5672'
+#            - '15672:15672'
+#    scheduler-ci:
+#        build: ..
+#        container_name: scheduler-ci
+#        env_file: scheduler-ci.env
+#        volumes:
+#        - '/etc:/scheduler-crontab'
+#        ports:
+#            - 5000:5000
 
     #
     #  mongo Production mode
     #  with Replica Set
     #
-    mongo_keys:
-        image: depop/openssl-bats
-        volumes:
-            - ./mongo-keys:/mongo-conf
-        command: 'bash -c "openssl rand -base64 741 > /mongo-conf/mongodb-keyfile; chmod 600 /mongo-conf/mongodb-keyfile; chown 999 /mongo-conf/mongodb-keyfile"'
-
-    mongo_one:
-        container_name: mongo1
-        image: mongo
-        ports:
-            - 27017:27017
-        env_file:
-            - mongo.env
-        volumes:
-            - ./mongo-keys:/opt/keyfile
-            - ./volumes/mongo1:/data/db
-        command: mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet mongo-replSet
-        depends_on:
-            - mongo_keys
-
-    mongo_two:
-        container_name: mongo2
-        image: mongo
-        command: mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet mongo-replSet
-        env_file:
-            - mongo.env
-        ports:
-            - 27018:27017
-        volumes:
-            - ./mongo-keys:/opt/keyfile
-            - ./volumes/mongo2:/data/db
-        depends_on:
-            - mongo_keys
-
-    mongo_three:
-        container_name: mongo3
-        image: mongo
-        command: mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet mongo-replSet
-        env_file:
-            - mongo.env
-        ports:
-            - 27019:27017
-        volumes:
-            - ./mongo-keys:/opt/keyfile
-            - ./volumes/mongo3:/data/db
-        depends_on:
-            - mongo_keys
+#    mongo_keys:
+#        image: depop/openssl-bats
+#        volumes:
+#            - ./mongo-keys:/mongo-conf
+#        command: 'bash -c "openssl rand -base64 741 > /mongo-conf/mongodb-keyfile; chmod 600 /mongo-conf/mongodb-keyfile; chown 999 /mongo-conf/mongodb-keyfile"'
+#
+#    mongo_one:
+#        container_name: mongo1
+#        image: mongo
+#        ports:
+#            - 27017:27017
+#        env_file:
+#            - mongo.env
+#        volumes:
+#            - ./mongo-keys:/opt/keyfile
+#            - ./volumes/mongo1:/data/db
+#        command: mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet mongo-replSet
+#        depends_on:
+#            - mongo_keys
+#
+#    mongo_two:
+#        container_name: mongo2
+#        image: mongo
+#        command: mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet mongo-replSet
+#        env_file:
+#            - mongo.env
+#        ports:
+#            - 27018:27017
+#        volumes:
+#            - ./mongo-keys:/opt/keyfile
+#            - ./volumes/mongo2:/data/db
+#        depends_on:
+#            - mongo_keys
+#
+#    mongo_three:
+#        container_name: mongo3
+#        image: mongo
+#        command: mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet mongo-replSet
+#        env_file:
+#            - mongo.env
+#        ports:
+#            - 27019:27017
+#        volumes:
+#            - ./mongo-keys:/opt/keyfile
+#            - ./volumes/mongo3:/data/db
+#        depends_on:
+#            - mongo_keys
