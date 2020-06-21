@@ -20,6 +20,7 @@ ARG AMQP_SEND_QUEUE
 
 ARG CONSUL_HOST
 ARG CONSUL_PORT
+ARG CONSUL_TOKEN
 
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
@@ -29,5 +30,5 @@ EXPOSE $PORT
 
 # RUN groupadd -g 999 appuser && useradd -r -u 999 -g appuser appuser
 
-CMD ["python", "/app/app.py"]
+CMD ["python", "app.py"]
 # CMD ["flask","run", "--host=0.0.0.0"]

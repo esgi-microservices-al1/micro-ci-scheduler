@@ -26,3 +26,7 @@ class Environment:
     @staticmethod
     def consul_port():
         return int(os.environ['CONSUL_PORT'])
+
+    @staticmethod
+    def consul_token():
+        return os.environ['CONSUL_TOKEN']

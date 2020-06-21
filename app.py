@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
@@ -24,7 +26,7 @@ api.add_namespace(check_namespace)
 if __name__ == '__main__':
     consul = ServiceDiscovery()
     consul.register(host=Environment.host(), port=Environment.port(),
-                    tags=['queue_name=scheduled_build'])
+                    tags=['queue=al1_scheduled_build'])
     host = Environment.host()
     if Environment.is_prod_environment():
         host = '0.0.0.0'
