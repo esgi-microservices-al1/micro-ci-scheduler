@@ -6,7 +6,6 @@ from Environnement import Environment
 class ServiceDiscovery:
 
     def __init__(self):
-
         if Environment.is_prod_environment():
             self.consul = Consul(host=Environment.consul_host(), port=Environment.consul_port(),
                                  token=Environment.consul_token(), scheme='http', verify=False)
@@ -20,7 +19,6 @@ class ServiceDiscovery:
         if host is None:
             host = 'localhost'
 
-        print(self.agent.services())
         self.agent.service.register(name=self.service_name, address=host,
                                     port=port, tags=tags,
                                     check=Check.http(url=f'http://{host}:{port}/check',

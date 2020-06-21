@@ -29,4 +29,4 @@ class Environment:
 
     @staticmethod
     def consul_token():
-        return int(os.environ['CONSUL_TOKEN'])
+        return os.environ['CONSUL_TOKEN']
