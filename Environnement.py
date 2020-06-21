@@ -5,7 +5,7 @@ class Environment:
 
     @staticmethod
     def is_prod_environment():
-        if 'ENV' in os.environ and os.environ['ENV']  == 'PROD':
+        if 'ENV' in os.environ and os.environ['ENV'] == 'PROD':
             return True
         return False
 
