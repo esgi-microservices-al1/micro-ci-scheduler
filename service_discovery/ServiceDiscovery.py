@@ -6,8 +6,13 @@ from Environnement import Environment
 class ServiceDiscovery:
 
     def __init__(self):
-        self.consul = Consul(host=Environment.consul_host(), port=Environment.consul_port(),
-                             scheme='http', verify=False)
+
+        if Environment.is_prod_environment():
+            self.consul = Consul(host=Environment.consul_host(), port=Environment.consul_port(),
+                                 token=Environment.consul_token(), scheme='http', verify=False)
+        else:
+            self.consul = Consul(host=Environment.consul_host(), port=Environment.consul_port(),
+                                 scheme='http', verify=False)
         self.agent = self.consul.Agent(agent=self.consul)
         self.service_name = 'SchedulerService'
 

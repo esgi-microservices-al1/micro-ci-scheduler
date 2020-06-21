@@ -20,6 +20,7 @@ ARG AMQP_SEND_QUEUE
 
 ARG CONSUL_HOST
 ARG CONSUL_PORT
+ARG CONSUL_TOKEN
 
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
