@@ -24,7 +24,6 @@ api.add_namespace(check_namespace)
 
 
 if __name__ == '__main__':
-    print(os.environ)
     consul = ServiceDiscovery()
     consul.register(host=Environment.host(), port=Environment.port(),
                     tags=['queue=al1_scheduled_build'])
