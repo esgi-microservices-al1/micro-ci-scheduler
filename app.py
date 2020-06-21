@@ -1,12 +1,13 @@
-import os
-
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
-from pymongo_inmemory.downloader import _mkdir_ifnot_exist
+
+from Environnement import Environment
+from service_discovery.ServiceDiscovery import ServiceDiscovery
 
 from apis.api_schedule import namespace as schedule_namespace
 from apis.api_communication import namespace as communication_namespace
+from apis.api_check import check_namespace
 
 app = Flask(__name__)
 
@@ -17,8 +18,15 @@ api = Api(app, version='1.0', title='Micro-CI-Scheduler API',
 
 api.add_namespace(schedule_namespace)
 api.add_namespace(communication_namespace)
+api.add_namespace(check_namespace)
 
 
-print(os.environ.get("PYMONGOIM__BIN_FOLDER", _mkdir_ifnot_exist("bin")))
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    consul = ServiceDiscovery()
+    consul.register(host=Environment.host(), port=Environment.port(),
+                    tags=['queue_name=scheduled_build'])
+    host = Environment.host()
+    if Environment.is_prod_environment():
+        host = '0.0.0.0'
+    app.run(host=host, port=Environment.port())
+    consul.deregister()

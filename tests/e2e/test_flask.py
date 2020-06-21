@@ -41,7 +41,7 @@ class TestAPI:
             post = client.post('/schedule', data=json.dumps(testSchedule), follow_redirects=True,
                                headers={'Content-Type': 'application/json'})
             assert post.status_code == 201
-            res = client.get('/schedule/')
+            res = client.get('/schedule')
             assert res.status_code == 200
             assert b'"name": "scheduleTest' in res.data
 
