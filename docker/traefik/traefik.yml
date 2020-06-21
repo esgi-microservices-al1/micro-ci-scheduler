@@ -9,4 +9,4 @@ api:
 providers:
   consulCatalog:
     endpoint:
-      address: consul:8500
+      address: service-discovery:8500

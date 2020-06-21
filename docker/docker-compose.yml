@@ -3,7 +3,7 @@ version: '3'
 services:
     consul:
         image: consul:latest
-        container_name: consul
+        container_name: service-discovery
         environment:
             - CONSUL_BIND_INTERFACE=eth0
         ports:
