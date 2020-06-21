@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
@@ -22,6 +24,7 @@ api.add_namespace(check_namespace)
 
 
 if __name__ == '__main__':
+    print(os.environ)
     consul = ServiceDiscovery()
     consul.register(host=Environment.host(), port=Environment.port(),
                     tags=['test=scheduled_build'])
