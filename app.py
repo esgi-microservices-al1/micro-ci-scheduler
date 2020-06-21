@@ -27,7 +27,7 @@ if __name__ == '__main__':
     print(os.environ)
     consul = ServiceDiscovery()
     consul.register(host=Environment.host(), port=Environment.port(),
-                    tags=['test=scheduled_build'])
+                    tags=['queue=al1_scheduled_build'])
     host = Environment.host()
     if Environment.is_prod_environment():
         host = '0.0.0.0'

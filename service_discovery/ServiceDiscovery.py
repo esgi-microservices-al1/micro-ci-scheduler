@@ -25,4 +25,8 @@ class ServiceDiscovery:
                                                      interval=10))
 
     def deregister(self):
-        self.agent.service.deregister(service_id=self.service_name)
+        if Environment.is_prod_environment():
+            self.consul.catalog.deregister(self.service_name, service_id=self.service_name,
+                                           token=Environment.consul_token())
+        else:
+            self.agent.service.deregister(service_id=self.service_name)
