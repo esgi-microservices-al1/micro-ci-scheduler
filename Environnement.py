@@ -30,3 +30,8 @@ class Environment:
     @staticmethod
     def consul_token():
         return os.environ['CONSUL_TOKEN']
+
+    @staticmethod
+    def amqp_env_variables():
+        return { each_env: os.environ[each_env] for each_env in os.environ if 'AMQP' in each_env }
+

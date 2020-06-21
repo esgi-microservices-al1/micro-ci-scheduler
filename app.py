@@ -21,7 +21,16 @@ api.add_namespace(communication_namespace)
 api.add_namespace(check_namespace)
 
 
+def write_cron_env_var():
+    with open('scripts/build_order.env', 'w') as file:
+        for each_env, value in Environment.amqp_env_variables().items():
+            file.write(f'export {each_env}={value}\n')
+        file.close()
+
+
 if __name__ == '__main__':
+    write_cron_env_var()
+
     consul = ServiceDiscovery()
     consul.register(host=Environment.host(), port=Environment.port(),
                     tags=['queue=al1_scheduled_build'])
