@@ -26,13 +26,13 @@ services:
 #            - '5672:5672'
 #            - '15672:15672'
     scheduler-ci:
-        build: ..
+        image: scheduler-ci:latest #esgimicroci/al1-docker-runner
         container_name: scheduler-ci
         env_file: scheduler-ci.env
         volumes:
         - '/etc:/scheduler-crontab'
         ports:
-            - 3000:5000
+            - 3000:3000
 
     #
     #  mongo Production mode
