@@ -10,7 +10,7 @@ services:
 #            - '15672:15672'
     scheduler-ci:
 #        build: ../../Dockerfile
-        image: esgimicroci/al1-docker-runner
+        image: esgimicroci/al1-scheduler
         container_name: scheduler-ci
         env_file: scheduler-ci.env
         volumes:
