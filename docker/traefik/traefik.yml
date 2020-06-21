@@ -1,0 +1,12 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+api:
+  insecure: true
+  dashboard: true
+
+providers:
+  consulCatalog:
+    endpoint:
+      address: service-discovery:8500
