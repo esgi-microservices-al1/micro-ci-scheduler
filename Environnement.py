@@ -33,5 +33,4 @@ class Environment:
 
     @staticmethod
     def amqp_env_variables():
-        return { each_env: os.environ[each_env] for each_env in os.environ if 'AMQP' in each_env }
-
+        return {each_env: os.environ[each_env] for each_env in os.environ if 'AMQP' in each_env}
