@@ -14,7 +14,7 @@ namespace = Namespace('schedule', description='schedule operations')
 json_encoder = DefaultJSONEncoder()
 
 
-@namespace.route("/")
+@namespace.route("")
 class ScheduleList(Resource):
 
     def get(self):

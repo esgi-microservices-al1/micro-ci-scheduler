@@ -25,7 +25,7 @@ Requirements to run the scripts/build_order.py :
 ```shell script
   py app.py
 ``` 
-of
+or
 ````shell script
   flask run --host=0.0.0.0
 ````

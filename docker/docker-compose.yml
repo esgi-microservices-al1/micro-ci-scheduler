@@ -3,12 +3,20 @@ version: '3'
 services:
     consul:
         image: consul:latest
-        container_name: consul
+        container_name: service-discovery
         environment:
             - CONSUL_BIND_INTERFACE=eth0
         ports:
             - 5000:8500
             - 5001:8600
+
+    micro-ci-traefik:
+        build: ./traefik
+        image: traefik-consul
+        container_name: traefik
+        ports:
+            - 8080:8080
+            - 80:80
 
 #    rabbitmq:
 #        image: rabbitmq:3-management-alpine
@@ -17,14 +25,14 @@ services:
 #        ports:
 #            - '5672:5672'
 #            - '15672:15672'
-#    scheduler-ci:
-#        build: ..
-#        container_name: scheduler-ci
-#        env_file: scheduler-ci.env
-#        volumes:
-#        - '/etc:/scheduler-crontab'
-#        ports:
-#            - 5000:5000
+    scheduler-ci:
+        build: ..
+        container_name: scheduler-ci
+        env_file: scheduler-ci.env
+        volumes:
+        - '/etc:/scheduler-crontab'
+        ports:
+            - 3000:5000
 
     #
     #  mongo Production mode
