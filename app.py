@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
@@ -31,11 +33,13 @@ def write_cron_env_var():
 if __name__ == '__main__':
     write_cron_env_var()
 
-    consul = ServiceDiscovery()
-    consul.register(host=Environment.host(), port=Environment.port(),
-                    tags=['queue=al1_scheduled_build'])
+    if Environment.is_prod_environment():
+        consul = ServiceDiscovery()
+        consul.register(host=Environment.host(), port=Environment.port(),
+                        tags=['queue=al1_scheduled_build'])
     host = Environment.host()
     if Environment.is_prod_environment():
         host = '0.0.0.0'
     app.run(host=host, port=Environment.port())
-    consul.deregister()
+    if Environment.is_prod_environment():
+        consul.deregister()
