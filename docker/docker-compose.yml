@@ -7,16 +7,23 @@ services:
         environment:
             - CONSUL_BIND_INTERFACE=eth0
         ports:
-            - 5000:8500
-            - 5001:8600
+            - 5001:8500
+            - 5002:8600
+        labels:
+            - "traefik.http.routers.consul.rule=Host(`consul.docker.localhost`)"
 
-    micro-ci-traefik:
-        build: ./traefik
-        image: traefik-consul
-        container_name: traefik
+    reverse-proxy:
+        image: traefik:v2.2
+        # Enables the web UI and tells Traefik to listen to docker
+        command: --api.insecure=true --providers.docker
         ports:
-            - 8080:8080
-            - 80:80
+            # The HTTP port
+            - "80:80"
+            # The Web UI (enabled by --api.insecure=true)
+            - "8080:8080"
+        volumes:
+            # So that Traefik can listen to the Docker events
+            - /var/run/docker.sock:/var/run/docker.sock
 
 #    rabbitmq:
 #        image: rabbitmq:3-management-alpine
@@ -26,13 +33,15 @@ services:
 #            - '5672:5672'
 #            - '15672:15672'
     scheduler-ci:
-        image: esgimicroci/al1-docker-scheduler
+        build: ..
         container_name: scheduler-ci
         env_file: scheduler-ci.env
         volumes:
         - '/etc:/scheduler-crontab'
         ports:
-            - 3000:3000
+            - 5000:5000
+        labels:
+            - "traefik.http.routers.scheduler-ci.rule=Host(`scheduler-ci.docker.localhost`)"
 
     #
     #  mongo Production mode
