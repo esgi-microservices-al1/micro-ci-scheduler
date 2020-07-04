@@ -2,6 +2,12 @@ import os
 import pika
 import argparse
 
+from pika import BasicProperties
+
+properties = BasicProperties(
+    content_type='application/json',
+    content_encoding='utf-8',
+)
 
 def send(ip, port, login, pwd, queue, body):
     credentials = pika.PlainCredentials(login, pwd)
@@ -13,7 +19,8 @@ def send(ip, port, login, pwd, queue, body):
 
     channel.basic_publish(exchange='',
                           routing_key=queue,
-                          body=body)
+                          body=body,
+                          properties=properties)
     print(" [x] Sent " + body)
 
     connection.close()

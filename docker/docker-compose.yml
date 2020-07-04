@@ -18,15 +18,15 @@ services:
             - 8080:8080
             - 80:80
 
-#    rabbitmq:
-#        image: rabbitmq:3-management-alpine
-#        container_name: rabbitmq
-#        env_file: amq.env
-#        ports:
-#            - '5672:5672'
-#            - '15672:15672'
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: rabbitmq
+        env_file: amq.env
+        ports:
+            - '5672:5672'
+            - '15672:15672'
     scheduler-ci:
-        image: esgimicroci/al1-docker-scheduler
+        image: micro-ci-scheduler
         container_name: scheduler-ci
         env_file: scheduler-ci.env
         volumes:
