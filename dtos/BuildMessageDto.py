@@ -4,5 +4,5 @@ class BuildMessageDto:
         self.branch = branch
 
     def encode_to_json(self):
-        return '{ \"project\": \"' + self.project + \
-               '\", \"branch\": "' + self.branch + '\" }'
+        return '{ "project": "' + self.project + \
+               '", "branch": "' + self.branch + '" }'
