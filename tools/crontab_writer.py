@@ -7,6 +7,8 @@ from dtos.BuildMessageDto import BuildMessageDto
 
 crontab_file = '/etc/crontab'
 
+os.system('service cron restart')
+
 
 def isTestLaunched():
     return os.getenv('TESTING') is not None and os.environ['TESTING'] == "True"
