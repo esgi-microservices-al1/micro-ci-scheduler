@@ -28,7 +28,7 @@ RUN pip install -r requirements.txt
 RUN pip install 'pymongo[srv]'
 
 RUN apt-get update
-RUN apt-get install cron
+RUN apt-get install cron -y
 
 EXPOSE $PORT
 
