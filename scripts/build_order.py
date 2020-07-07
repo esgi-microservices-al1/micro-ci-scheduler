@@ -9,6 +9,7 @@ properties = BasicProperties(
     content_encoding='utf-8',
 )
 
+
 def send(ip, port, login, pwd, queue, body):
     credentials = pika.PlainCredentials(login, pwd)
     connection = pika.BlockingConnection(pika.ConnectionParameters(ip, port, '/', credentials))
