@@ -27,6 +27,9 @@ RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 RUN pip install 'pymongo[srv]'
 
+RUN apt-get update
+RUN apt-get install cron
+
 EXPOSE $PORT
 
 # RUN groupadd -g 999 appuser && useradd -r -u 999 -g appuser appuser
