@@ -31,7 +31,7 @@ def write_cron_env_var():
     with open(file_path, 'w') as file:
         opened = True
         for each_env, value in Environment.amqp_env_variables().items():
-            file.write(f'export {each_env}={value}\n')
+            file.write(f'export {each_env}="{value}"\n')
         file.close()
     if not opened:
         print(f'file path incorrect  : {file_path}', file=sys.stderr)
