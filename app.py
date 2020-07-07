@@ -44,8 +44,8 @@ if __name__ == '__main__':
     if Environment.is_prod_environment():
         consul = ServiceDiscovery()
         consul.register(host=Environment.host(), port=Environment.port(),
-                        tags=['queue=al1_scheduled_build',
-                              'traefik.enable=true', 'traefik.frontend.entryPoints=http',
+                        tags=['queue=al1_scheduled_build', 'traefik.enable=true',
+                              'traefik.frontend.entryPoints=http',
                               'traefik.frontend.rule=PathPrefixStrip:/al1.scheduler-ci/'])
     host = Environment.host()
     if Environment.is_prod_environment():
