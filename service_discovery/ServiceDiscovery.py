@@ -12,21 +12,20 @@ class ServiceDiscovery:
         else:
             self.consul = Consul(host=Environment.consul_host(), port=Environment.consul_port(),
                                  scheme='http', verify=False)
-        self.agent = self.consul.Agent(agent=self.consul)
         self.service_name = 'SchedulerService'
 
     def register(self, host='localhost', port=3000, tags=None):
         if host is None:
             host = 'localhost'
-
-        self.agent.service.register(name=self.service_name, address=host,
-                                    port=port, tags=tags,
-                                    check=Check.http(url=f'http://{host}:{port}/check',
-                                                     interval=10))
+        self.consul.agent.service.register(name=self.service_name, address=host,
+                                           port=port, tags=tags,
+                                           check=Check.http(url=f'http://{host}:{port}/check',
+                                                            interval=10))
 
     def deregister(self):
+
         if Environment.is_prod_environment():
-            self.consul.catalog.deregister(self.service_name, service_id=self.service_name,
-                                           token=Environment.consul_token())
+            self.consul.agent.service.deregister(service_id=self.service_name,
+                                                 token=Environment.consul_token())
         else:
-            self.agent.service.deregister(service_id=self.service_name)
+            self.consul.agent.service.deregister(service_id=self.service_name)

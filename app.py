@@ -1,3 +1,6 @@
+import os
+import sys
+
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
@@ -22,20 +25,29 @@ api.add_namespace(check_namespace)
 
 
 def write_cron_env_var():
-    with open('scripts/build_order.env', 'w') as file:
+    file_path = f'{os.path.abspath(os.path.curdir)}/scripts/build_order.env'
+
+    opened = False
+    with open(file_path, 'w') as file:
+        opened = True
         for each_env, value in Environment.amqp_env_variables().items():
             file.write(f'export {each_env}={value}\n')
         file.close()
+    if not opened:
+        print(f'file path incorrect  : {file_path}', file=sys.stderr)
+        exit(0)
 
 
 if __name__ == '__main__':
     write_cron_env_var()
 
-    consul = ServiceDiscovery()
-    consul.register(host=Environment.host(), port=Environment.port(),
-                    tags=['queue=al1_scheduled_build'])
+    if Environment.is_prod_environment():
+        consul = ServiceDiscovery()
+        consul.register(host=Environment.host(), port=Environment.port(),
+                        tags=['queue=al1_scheduled_build', 'traefik.enable=true', 'traefik.frontend.entryPoints=http', 'traefik.frontend.rule=PathPrefixStrip:/al1.scheduler-ci/'])
     host = Environment.host()
     if Environment.is_prod_environment():
         host = '0.0.0.0'
     app.run(host=host, port=Environment.port())
-    consul.deregister()
+    if Environment.is_prod_environment():
+        consul.deregister()

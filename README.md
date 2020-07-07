@@ -15,7 +15,7 @@ Environment variables needed :
  - DB_PWD : database login password
  - DB_HOST : database address
  - DB_NAME : database name
- - API_LOCAL_PATH : absolute local path of the api on the server 
+ - SCRIPTS_PATH : absolute local path of the script folder api on the server 
 
 Requirements to run the scripts/build_order.py :
  - Python 3.7 or later

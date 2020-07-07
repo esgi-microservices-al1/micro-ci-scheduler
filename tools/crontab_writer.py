@@ -2,6 +2,9 @@ import os
 import platform
 
 from crontab import CronTab
+import json
+
+from dtos.BuildMessageDto import BuildMessageDto
 
 crontab_file = '/scheduler-crontab/crontab'
 
@@ -19,11 +22,13 @@ class CrontabWriter:
 
         cron = CronTab(user='root', tabfile=crontab_file)
 
+        message = BuildMessageDto(project=schedule.project, branch=schedule.branch)
+        message = json.dumps(message.__dict__, sort_keys=True, indent=4)
+
         # TODO jsonify this message
         job = cron.new(command='root . ' + os.environ['SCRIPTS_PATH'] +
                                '/build_order.env;' + ' python ' +
-                               os.environ['SCRIPTS_PATH'] + '/build_order.py --message  build:' +
-                               schedule.project + ':' + schedule.branch, comment=id)
+                               os.environ['SCRIPTS_PATH'] + '/build_order.py --message "' + message +'"', comment=id)
         job = CrontabWriter.translate_schedule(schedule, job)
         if job.is_valid():
             cron.write()

@@ -17,7 +17,9 @@ class Environment:
 
     @staticmethod
     def port():
-        return int(os.environ['PORT'])
+        if 'PORT' in os.environ:
+            return int(os.environ['PORT'])
+        return 5000
 
     @staticmethod
     def consul_host():
