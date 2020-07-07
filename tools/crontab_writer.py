@@ -28,8 +28,8 @@ class CrontabWriter:
         job = cron.new(command='root . ' + os.environ['SCRIPTS_PATH'] +
                                '/build_order.env;' + ' python ' +
                                os.environ['SCRIPTS_PATH'] +
-                               '/build_order.py --message "\"' +
-                               message + '\""', comment=id)
+                               '/build_order.py --message ' +
+                               message, comment=id)
         job = CrontabWriter.translate_schedule(schedule, job)
         if job.is_valid():
             cron.write()
