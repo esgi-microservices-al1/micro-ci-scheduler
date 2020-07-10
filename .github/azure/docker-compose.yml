@@ -17,6 +17,10 @@ services:
             - 3000:3000
         expose:
           - 3000
+        depends_on:
+          - mongo_one
+          - mongo_two
+          - mongo_three
         restart: always
 
     #
@@ -28,6 +32,7 @@ services:
         volumes:
             - ./mongo-keys:/mongo-conf
         command: 'bash -c "openssl rand -base64 741 > /mongo-conf/mongodb-keyfile; chmod 600 /mongo-conf/mongodb-keyfile; chown 999 /mongo-conf/mongodb-keyfile"'
+        restart: always
 
     mongo_one:
         container_name: scheduler-mongo1
@@ -40,6 +45,7 @@ services:
         command: mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet mongo-replSet
         depends_on:
             - mongo_keys
+        restart: always
 
     mongo_two:
         container_name: scheduler-mongo2
@@ -52,6 +58,7 @@ services:
             - ./volumes/mongo2:/data/db
         depends_on:
             - mongo_keys
+        restart: always
 
     mongo_three:
         container_name: scheduler-mongo3
@@ -64,5 +71,6 @@ services:
             - ./volumes/mongo3:/data/db
         depends_on:
             - mongo_keys
+        restart: always
 
 # Add your networks/volumes/services for your microservice
