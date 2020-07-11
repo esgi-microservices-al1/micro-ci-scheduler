@@ -16,7 +16,7 @@ class ScheduleDto:
         interval = IntervalDto.deserialize(data['interval'])
         id = str(data['_id'])
         name = data['name']
-        project = data['project']
+        project = str(data['project'])
         branch = data['branch']
         start_date = data['startDate']
         return ScheduleDto(id, name, project, branch, interval, start_date)
