@@ -14,14 +14,14 @@ def client():
 
 testSchedule = dict(
     name="scheduleTest",
-    project="5f09a2e88158385ce934900b", #Project ID mongo
+    project="5f09a2e88158385ce934900b",  # Project ID mongo
     branch="master",
     interval=dict(unity='DAY', frequency=1),
     startDate=str(datetime.now())
 )
 updatedSchedule = dict(
     name="updatedScheduleTest",
-    project="5f09a2e88158385ce934900b",#Project ID mongo
+    project="5f09a2e88158385ce934900b",  # Project ID mongo
     branch="master",
     interval=dict(unity='DAY', frequency=1),
     startDate=str(datetime.now())
