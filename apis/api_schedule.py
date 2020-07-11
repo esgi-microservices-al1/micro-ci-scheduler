@@ -106,6 +106,7 @@ class Schedule(Resource):
         if old is None:
             return 'Schedule with id ' + id + ' not found', 404
         new = request.get_json()
+        new['project'] = ObjectId(new['project'])
         old.pop('_id')
         update = {"$set": new}
         db.Schedule.update_one(old, update)
