@@ -23,7 +23,7 @@ class CrontabWriter:
 
         cron = CronTab(user='root', tabfile=crontab_file)
 
-        message = BuildMessageDto(project=schedule.project, branch=schedule.branch)
+        message = BuildMessageDto(project=str(schedule.project), branch=schedule.branch)
         message = message.encode_to_json()
 
         # TODO jsonify this message
