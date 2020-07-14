@@ -13,6 +13,8 @@ services:
         image: esgimicroci/al1-scheduler
         container_name: scheduler-ci
         env_file: scheduler-ci.env
+        volumes:
+            - /home/micro-ci-al1/micro-ci-scheduler/cron/crontab:/etc/crontab
         ports:
             - 3000:3000
         expose:
